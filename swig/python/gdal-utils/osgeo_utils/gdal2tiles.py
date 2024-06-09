@@ -2905,6 +2905,34 @@ class GDAL2Tiles(object):
                         tx, ty, tz, self.tile_size
                     )
 
+                # tiling 안해도 되는 곳 exclude 처리
+                ulx = b[0]
+                uly = b[3]
+                lrx = b[2]
+                lry = b[1]
+
+                # 북한 육지영역
+                # 38.139 123.293
+                # 39.63 127.927
+                x1 = 13724913.978375081
+                x2 = 14240768.498711107
+                y1 = 4599080.50299664
+                y2 = 4812319.666403435
+                if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
+                    # print("Excluded 1 ", "ulx : ", ulx, ", uly : ", uly, ", lrx : ", lrx, ", lry : ", lry)
+                    continue
+
+                # 남한 육지영역
+                # 35.28 127.228
+                # 38.44 128.649
+                x1 = 14162956.17464661
+                x2 = 14321141.171063852
+                y1 = 4201997.429019858
+                y2 = 4641770.887565958
+                if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
+                    # print("Excluded 2", "ulx : ", ulx, ", uly : ", uly, ", lrx : ", lrx, ", lry : ", lry)
+                    continue
+
                 # Don't scale up by nearest neighbour, better change the querysize
                 # to the native resolution (and return smaller query tile) for scaling
 
