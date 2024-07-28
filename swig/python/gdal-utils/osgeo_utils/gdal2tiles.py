@@ -2911,27 +2911,44 @@ class GDAL2Tiles(object):
                 lrx = b[2]
                 lry = b[1]
 
+                # 경기만으로 영역을 한정한다.
+                # 4326
+                # min_x = 125.58250452158572
+                # min_y = 36.96000842013926
+                # max_x = 126.87339807627322
+                # max_y = 37.72860394730805
+
+                # 3857
+                # min_x = 13979780.447299568
+                # min_y = 4433533.941746355
+                # max_x = 14123482.069063028
+                # max_y = 4541157.277571885
+                #
+
+                if not (13979780.447299568 < ulx < 14123482.069063028 and 4433533.941746355 < uly < 4541157.277571885):
+                    continue
+
                 # 북한 육지영역
                 # 38.139 123.293
                 # 39.63 127.927
-                x1 = 13724913.978375081
-                x2 = 14240768.498711107
-                y1 = 4599080.50299664
-                y2 = 4812319.666403435
-                if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
+                # x1 = 13724913.978375081
+                # x2 = 14240768.498711107
+                # y1 = 4599080.50299664
+                # y2 = 4812319.666403435
+                # if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
                     # print("Excluded 1 ", "ulx : ", ulx, ", uly : ", uly, ", lrx : ", lrx, ", lry : ", lry)
-                    continue
+                    # continue
 
                 # 남한 육지영역
                 # 35.28 127.228
                 # 38.44 128.649
-                x1 = 14162956.17464661
-                x2 = 14321141.171063852
-                y1 = 4201997.429019858
-                y2 = 4641770.887565958
-                if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
+                # x1 = 14162956.17464661
+                # x2 = 14321141.171063852
+                # y1 = 4201997.429019858
+                # y2 = 4641770.887565958
+                # if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
                     # print("Excluded 2", "ulx : ", ulx, ", uly : ", uly, ", lrx : ", lrx, ", lry : ", lry)
-                    continue
+                    # continue
 
                 # Don't scale up by nearest neighbour, better change the querysize
                 # to the native resolution (and return smaller query tile) for scaling
