@@ -2933,6 +2933,7 @@ class GDAL2Tiles(object):
                 # max_x = 14123482.069063028
                 # max_y = 4541157.277571885
                 #
+                logger.debug(f"self.options.k_bay: {self.options.k_bay}")
                 if self.options.k_bay and not (13979780.447299568 < ulx < 14123482.069063028 and 4433533.941746355 < uly < 4541157.277571885):
                     continue
 
