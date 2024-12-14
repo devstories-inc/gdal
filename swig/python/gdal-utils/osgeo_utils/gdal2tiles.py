@@ -1762,7 +1762,6 @@ def optparse_init() -> optparse.OptionParser:
     profile_list = get_profile_list()
 
     p.add_option(
-        "-k-bay",
         "--k_bay",
         action="store_true",
         dest="k_bay",
