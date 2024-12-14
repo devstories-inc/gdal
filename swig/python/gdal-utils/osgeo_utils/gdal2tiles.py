@@ -1762,6 +1762,13 @@ def optparse_init() -> optparse.OptionParser:
     profile_list = get_profile_list()
 
     p.add_option(
+        "-k-bay",
+        "--k_bay",
+        action="store_true",
+        dest="k_bay",
+        help="경기만만 타일링할 지 여부",
+    )
+    p.add_option(
         "-p",
         "--profile",
         dest="profile",
@@ -2895,6 +2902,8 @@ class GDAL2Tiles(object):
                         logger.debug("Tile generation skipped because of --resume")
                     continue
 
+                b = ()
+
                 if self.options.profile == "mercator":
                     # Tile bounds in EPSG:3857
                     b = self.mercator.TileBounds(tx, ty, tz)
@@ -2924,31 +2933,30 @@ class GDAL2Tiles(object):
                 # max_x = 14123482.069063028
                 # max_y = 4541157.277571885
                 #
-
-                if not (13979780.447299568 < ulx < 14123482.069063028 and 4433533.941746355 < uly < 4541157.277571885):
+                if self.options.k_bay and not (13979780.447299568 < ulx < 14123482.069063028 and 4433533.941746355 < uly < 4541157.277571885):
                     continue
 
                 # 북한 육지영역
                 # 38.139 123.293
                 # 39.63 127.927
-                # x1 = 13724913.978375081
-                # x2 = 14240768.498711107
-                # y1 = 4599080.50299664
-                # y2 = 4812319.666403435
-                # if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
+                x1 = 13724913.978375081
+                x2 = 14240768.498711107
+                y1 = 4599080.50299664
+                y2 = 4812319.666403435
+                if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
                     # print("Excluded 1 ", "ulx : ", ulx, ", uly : ", uly, ", lrx : ", lrx, ", lry : ", lry)
-                    # continue
+                    continue
 
                 # 남한 육지영역
                 # 35.28 127.228
                 # 38.44 128.649
-                # x1 = 14162956.17464661
-                # x2 = 14321141.171063852
-                # y1 = 4201997.429019858
-                # y2 = 4641770.887565958
-                # if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
+                x1 = 14162956.17464661
+                x2 = 14321141.171063852
+                y1 = 4201997.429019858
+                y2 = 4641770.887565958
+                if x1 < ulx < x2 and y1 < uly < y2 and x1 < lrx < x2 and y1 < lry < y2:
                     # print("Excluded 2", "ulx : ", ulx, ", uly : ", uly, ", lrx : ", lrx, ", lry : ", lry)
-                    # continue
+                    continue
 
                 # Don't scale up by nearest neighbour, better change the querysize
                 # to the native resolution (and return smaller query tile) for scaling
